@@ -1,0 +1,16 @@
+{
+    "name": "openfarm-subgraph",
+    "license": "LGPL-3.0",
+    "scripts": {
+        "codegen": "graph codegen",
+        "build": "graph build",
+        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ xdefilab/openfarmtest",
+        "create-local": "graph create --node http://localhost:8020/ xdefilab/openfarmtest",
+        "remove-local": "graph remove --node http://localhost:8020/ xdefilab/openfarmtest",
+        "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 xdefilab/openfarmtest"
+    },
+    "dependencies": {
+        "@graphprotocol/graph-cli": "^0.19.0",
+        "@graphprotocol/graph-ts": "^0.19.0"
+    }
+}

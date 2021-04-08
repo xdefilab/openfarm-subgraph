@@ -1,0 +1,29 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: kovan
+    source:
+      address: "0x93952Ec4756AD1212d28c3c8ac5AC2700C241EC1"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - LogCreateFarmPool
+        - LogCreateSpotPool
+        - LogCreateToken
+      abis:
+        - name: Contract
+          file: ./abis/FarmFactory.json
+      eventHandlers:
+        - event: LogCreateFarmPool(indexed address,indexed uint256)
+          handler: handleLogCreateFarmPool
+        - event: LogCreateSpotPool(indexed address,indexed address)
+          handler: handleLogCreateSpotPool
+        - event: LogCreateToken(indexed address,indexed address)
+          handler: handleLogCreateToken
+      file: ./src/mapping.ts

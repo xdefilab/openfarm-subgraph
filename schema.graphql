@@ -1,0 +1,5 @@
+type OpenFarm @entity {
+  id: ID!
+  totalFarmCount: BigInt!
+  totalErc20Count: BigInt!
+}
