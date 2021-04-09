@@ -27,3 +27,34 @@ dataSources:
         - event: LogCreateToken(indexed address,indexed address)
           handler: handleLogCreateToken
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: FarmPool
+    network: kovan
+    source:
+      address: "0x7a72FfAEE79603CA5ebD82a0a67c28e5B8eCcCaB"
+      abi: FarmPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - LogRewardAdded
+        - LogStaked
+        - LogWithdrawn
+        - LogRewardPaid
+        - LogRewardToStream
+      abis:
+        - name: FarmPool
+          file: ./abis/FarmPool.json
+      eventHandlers:
+        - event: LogRewardAdded(indexed uint256,uint256)
+          handler: handleLogRewardAdded
+        - event: LogStaked(indexed uint256,indexed address,uint256)
+          handler: handleLogStaked
+        - event: LogWithdrawn(indexed uint256,indexed address,uint256)
+          handler: handleLogWithdrawn
+        - event: LogRewardPaid(indexed uint256,indexed address,uint256)
+          handler: handleLogRewardPaid
+        - event: LogRewardToStream(indexed uint256,indexed address,indexed uint256,uint256)
+          handler: handleLogRewardToStream
+      file: ./src/farmpool.ts

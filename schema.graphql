@@ -3,3 +3,83 @@ type OpenFarm @entity {
   totalFarmCount: BigInt!
   totalErc20Count: BigInt!
 }
+
+type TemplateAToken @entity {
+    id: ID!
+    symbol: String
+    name: String
+    decimals: Int!
+    address: String!
+    totalSupply: BigInt!
+    issuer: Bytes!
+    timestamp: BigInt!
+}
+
+type FarmPool @entity {
+    id: ID!
+    farmPoolId: Int!                  # for sorting
+    spotPoolId: String!               # spot pool address
+    rewardsToken: String!
+    stakingToken: String!
+    creater: String!
+    startBlock: Int!
+    endBlock: Int!
+    rewardsDuration: Int!             # duration = start - block + 1
+    rewardRatio: Int!
+    totalSupply: BigInt!
+    unlockRatio: BigInt!
+    halflifeK: Int!
+    halflifeRatio: Int!
+    stakes: [FarmStake!] @derivedFrom(field: "farmPoolId")
+    streams: [RewardStream!] @derivedFrom(field: "farmPoolId")
+    proposals:[VoteProposal!] @derivedFrom(field: "farmPoolId")
+    tx: Bytes                                           # Farm Pool creation transaction id
+}
+
+type FarmStake @entity {
+    id: ID!                                             # poolId + userAddress
+    userAddress: User!
+    farmPoolId: FarmPool!
+    amount: BigDecimal!
+}
+
+type RewardStream @entity {
+    id: ID!
+    userAddress: User!
+    farmPoolId: FarmPool!
+    streamId: Int!               # 0 means not exist
+}
+
+type User @entity {
+    id: ID!
+    staked: [FarmStake!]  @derivedFrom(field: "userAddress")
+    streamed: [RewardStream!]  @derivedFrom(field: "userAddress")
+    txs: [Transaction!]  @derivedFrom(field: "userAddress")
+}
+
+type VoteProposal @entity {
+    id: ID!
+    farmPoolId: FarmPool!
+}
+
+type Transaction @entity {
+    id: ID!                         # Log ID
+    tx: Bytes!
+    event: String
+    block: BigInt!
+    timestamp: BigInt!
+    gasUsed: BigDecimal!
+    gasPrice: BigDecimal!
+    farmPoolId: Int
+    userAddress: User
+    action: TrxType
+    sender: Bytes
+}
+
+enum TrxType {
+    farmPoolStake,
+    farmPoolWithdraw,
+    farmPoolExit,
+    rewardPaid,
+    rewardToStream
+}

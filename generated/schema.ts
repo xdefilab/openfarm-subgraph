@@ -60,3 +60,720 @@ export class OpenFarm extends Entity {
     this.set("totalErc20Count", Value.fromBigInt(value));
   }
 }
+
+export class TemplateAToken extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save TemplateAToken entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save TemplateAToken entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("TemplateAToken", id.toString(), this);
+  }
+
+  static load(id: string): TemplateAToken | null {
+    return store.get("TemplateAToken", id) as TemplateAToken | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get symbol(): string | null {
+    let value = this.get("symbol");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set symbol(value: string | null) {
+    if (value === null) {
+      this.unset("symbol");
+    } else {
+      this.set("symbol", Value.fromString(value as string));
+    }
+  }
+
+  get name(): string | null {
+    let value = this.get("name");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (value === null) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(value as string));
+    }
+  }
+
+  get decimals(): i32 {
+    let value = this.get("decimals");
+    return value.toI32();
+  }
+
+  set decimals(value: i32) {
+    this.set("decimals", Value.fromI32(value));
+  }
+
+  get address(): string {
+    let value = this.get("address");
+    return value.toString();
+  }
+
+  set address(value: string) {
+    this.set("address", Value.fromString(value));
+  }
+
+  get totalSupply(): BigInt {
+    let value = this.get("totalSupply");
+    return value.toBigInt();
+  }
+
+  set totalSupply(value: BigInt) {
+    this.set("totalSupply", Value.fromBigInt(value));
+  }
+
+  get issuer(): Bytes {
+    let value = this.get("issuer");
+    return value.toBytes();
+  }
+
+  set issuer(value: Bytes) {
+    this.set("issuer", Value.fromBytes(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class FarmPool extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save FarmPool entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save FarmPool entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("FarmPool", id.toString(), this);
+  }
+
+  static load(id: string): FarmPool | null {
+    return store.get("FarmPool", id) as FarmPool | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get farmPoolId(): i32 {
+    let value = this.get("farmPoolId");
+    return value.toI32();
+  }
+
+  set farmPoolId(value: i32) {
+    this.set("farmPoolId", Value.fromI32(value));
+  }
+
+  get spotPoolId(): string {
+    let value = this.get("spotPoolId");
+    return value.toString();
+  }
+
+  set spotPoolId(value: string) {
+    this.set("spotPoolId", Value.fromString(value));
+  }
+
+  get rewardsToken(): string {
+    let value = this.get("rewardsToken");
+    return value.toString();
+  }
+
+  set rewardsToken(value: string) {
+    this.set("rewardsToken", Value.fromString(value));
+  }
+
+  get stakingToken(): string {
+    let value = this.get("stakingToken");
+    return value.toString();
+  }
+
+  set stakingToken(value: string) {
+    this.set("stakingToken", Value.fromString(value));
+  }
+
+  get creater(): string {
+    let value = this.get("creater");
+    return value.toString();
+  }
+
+  set creater(value: string) {
+    this.set("creater", Value.fromString(value));
+  }
+
+  get startBlock(): i32 {
+    let value = this.get("startBlock");
+    return value.toI32();
+  }
+
+  set startBlock(value: i32) {
+    this.set("startBlock", Value.fromI32(value));
+  }
+
+  get endBlock(): i32 {
+    let value = this.get("endBlock");
+    return value.toI32();
+  }
+
+  set endBlock(value: i32) {
+    this.set("endBlock", Value.fromI32(value));
+  }
+
+  get rewardsDuration(): i32 {
+    let value = this.get("rewardsDuration");
+    return value.toI32();
+  }
+
+  set rewardsDuration(value: i32) {
+    this.set("rewardsDuration", Value.fromI32(value));
+  }
+
+  get rewardRatio(): i32 {
+    let value = this.get("rewardRatio");
+    return value.toI32();
+  }
+
+  set rewardRatio(value: i32) {
+    this.set("rewardRatio", Value.fromI32(value));
+  }
+
+  get totalSupply(): BigInt {
+    let value = this.get("totalSupply");
+    return value.toBigInt();
+  }
+
+  set totalSupply(value: BigInt) {
+    this.set("totalSupply", Value.fromBigInt(value));
+  }
+
+  get unlockRatio(): BigInt {
+    let value = this.get("unlockRatio");
+    return value.toBigInt();
+  }
+
+  set unlockRatio(value: BigInt) {
+    this.set("unlockRatio", Value.fromBigInt(value));
+  }
+
+  get halflifeK(): i32 {
+    let value = this.get("halflifeK");
+    return value.toI32();
+  }
+
+  set halflifeK(value: i32) {
+    this.set("halflifeK", Value.fromI32(value));
+  }
+
+  get halflifeRatio(): i32 {
+    let value = this.get("halflifeRatio");
+    return value.toI32();
+  }
+
+  set halflifeRatio(value: i32) {
+    this.set("halflifeRatio", Value.fromI32(value));
+  }
+
+  get stakes(): Array<string> | null {
+    let value = this.get("stakes");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set stakes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("stakes");
+    } else {
+      this.set("stakes", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get streams(): Array<string> | null {
+    let value = this.get("streams");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set streams(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("streams");
+    } else {
+      this.set("streams", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get proposals(): Array<string> | null {
+    let value = this.get("proposals");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set proposals(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("proposals");
+    } else {
+      this.set("proposals", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get tx(): Bytes | null {
+    let value = this.get("tx");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set tx(value: Bytes | null) {
+    if (value === null) {
+      this.unset("tx");
+    } else {
+      this.set("tx", Value.fromBytes(value as Bytes));
+    }
+  }
+}
+
+export class FarmStake extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save FarmStake entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save FarmStake entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("FarmStake", id.toString(), this);
+  }
+
+  static load(id: string): FarmStake | null {
+    return store.get("FarmStake", id) as FarmStake | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get userAddress(): string {
+    let value = this.get("userAddress");
+    return value.toString();
+  }
+
+  set userAddress(value: string) {
+    this.set("userAddress", Value.fromString(value));
+  }
+
+  get farmPoolId(): string {
+    let value = this.get("farmPoolId");
+    return value.toString();
+  }
+
+  set farmPoolId(value: string) {
+    this.set("farmPoolId", Value.fromString(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+}
+
+export class RewardStream extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save RewardStream entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save RewardStream entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("RewardStream", id.toString(), this);
+  }
+
+  static load(id: string): RewardStream | null {
+    return store.get("RewardStream", id) as RewardStream | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get userAddress(): string {
+    let value = this.get("userAddress");
+    return value.toString();
+  }
+
+  set userAddress(value: string) {
+    this.set("userAddress", Value.fromString(value));
+  }
+
+  get farmPoolId(): string {
+    let value = this.get("farmPoolId");
+    return value.toString();
+  }
+
+  set farmPoolId(value: string) {
+    this.set("farmPoolId", Value.fromString(value));
+  }
+
+  get streamId(): i32 {
+    let value = this.get("streamId");
+    return value.toI32();
+  }
+
+  set streamId(value: i32) {
+    this.set("streamId", Value.fromI32(value));
+  }
+}
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save User entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save User entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("User", id.toString(), this);
+  }
+
+  static load(id: string): User | null {
+    return store.get("User", id) as User | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get staked(): Array<string> | null {
+    let value = this.get("staked");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set staked(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("staked");
+    } else {
+      this.set("staked", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get streamed(): Array<string> | null {
+    let value = this.get("streamed");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set streamed(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("streamed");
+    } else {
+      this.set("streamed", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get txs(): Array<string> | null {
+    let value = this.get("txs");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set txs(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("txs");
+    } else {
+      this.set("txs", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class VoteProposal extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save VoteProposal entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save VoteProposal entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("VoteProposal", id.toString(), this);
+  }
+
+  static load(id: string): VoteProposal | null {
+    return store.get("VoteProposal", id) as VoteProposal | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get farmPoolId(): string {
+    let value = this.get("farmPoolId");
+    return value.toString();
+  }
+
+  set farmPoolId(value: string) {
+    this.set("farmPoolId", Value.fromString(value));
+  }
+}
+
+export class Transaction extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Transaction entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Transaction entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Transaction", id.toString(), this);
+  }
+
+  static load(id: string): Transaction | null {
+    return store.get("Transaction", id) as Transaction | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tx(): Bytes {
+    let value = this.get("tx");
+    return value.toBytes();
+  }
+
+  set tx(value: Bytes) {
+    this.set("tx", Value.fromBytes(value));
+  }
+
+  get event(): string | null {
+    let value = this.get("event");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event(value: string | null) {
+    if (value === null) {
+      this.unset("event");
+    } else {
+      this.set("event", Value.fromString(value as string));
+    }
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get gasUsed(): BigDecimal {
+    let value = this.get("gasUsed");
+    return value.toBigDecimal();
+  }
+
+  set gasUsed(value: BigDecimal) {
+    this.set("gasUsed", Value.fromBigDecimal(value));
+  }
+
+  get gasPrice(): BigDecimal {
+    let value = this.get("gasPrice");
+    return value.toBigDecimal();
+  }
+
+  set gasPrice(value: BigDecimal) {
+    this.set("gasPrice", Value.fromBigDecimal(value));
+  }
+
+  get farmPoolId(): i32 {
+    let value = this.get("farmPoolId");
+    return value.toI32();
+  }
+
+  set farmPoolId(value: i32) {
+    this.set("farmPoolId", Value.fromI32(value));
+  }
+
+  get userAddress(): string | null {
+    let value = this.get("userAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set userAddress(value: string | null) {
+    if (value === null) {
+      this.unset("userAddress");
+    } else {
+      this.set("userAddress", Value.fromString(value as string));
+    }
+  }
+
+  get action(): string | null {
+    let value = this.get("action");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set action(value: string | null) {
+    if (value === null) {
+      this.unset("action");
+    } else {
+      this.set("action", Value.fromString(value as string));
+    }
+  }
+
+  get sender(): Bytes | null {
+    let value = this.get("sender");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set sender(value: Bytes | null) {
+    if (value === null) {
+      this.unset("sender");
+    } else {
+      this.set("sender", Value.fromBytes(value as Bytes));
+    }
+  }
+}
