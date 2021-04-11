@@ -501,6 +501,15 @@ export class RewardStream extends Entity {
   set streamId(value: i32) {
     this.set("streamId", Value.fromI32(value));
   }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
 }
 
 export class User extends Entity {
