@@ -27,8 +27,40 @@ export class LogCreateFarmPool__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
+  get rewardToken(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get stakeToken(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
   get farmId(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get startBlock(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get rewardsDuration(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get rewardRatio(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+
+  get lockRatio(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
+  }
+
+  get halflifeK(): BigInt {
+    return this._event.parameters[8].value.toBigInt();
+  }
+
+  get halflifeRatio(): BigInt {
+    return this._event.parameters[9].value.toBigInt();
   }
 }
 
@@ -111,27 +143,102 @@ export class FarmFactory extends ethereum.SmartContract {
     return new FarmFactory("FarmFactory", address);
   }
 
-  createdFarmPools(param0: Address): boolean {
+  createPoolAndFarm(
+    factoryAddress: Address,
+    tokens: Array<Address>,
+    balances: Array<BigInt>,
+    denorms: Array<BigInt>,
+    swapFee: BigInt,
+    exitFee: BigInt,
+    params: FarmFactory__createPoolAndFarmInputParamsStruct
+  ): BigInt {
     let result = super.call(
-      "createdFarmPools",
-      "createdFarmPools(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
+      "createPoolAndFarm",
+      "createPoolAndFarm(address,address[],uint256[],uint256[],uint256,uint256,(address,uint256,uint256,uint256,uint256,uint256,uint256)):(uint256)",
+      [
+        ethereum.Value.fromAddress(factoryAddress),
+        ethereum.Value.fromAddressArray(tokens),
+        ethereum.Value.fromUnsignedBigIntArray(balances),
+        ethereum.Value.fromUnsignedBigIntArray(denorms),
+        ethereum.Value.fromUnsignedBigInt(swapFee),
+        ethereum.Value.fromUnsignedBigInt(exitFee),
+        ethereum.Value.fromTuple(params)
+      ]
     );
 
-    return result[0].toBoolean();
+    return result[0].toBigInt();
   }
 
-  try_createdFarmPools(param0: Address): ethereum.CallResult<boolean> {
+  try_createPoolAndFarm(
+    factoryAddress: Address,
+    tokens: Array<Address>,
+    balances: Array<BigInt>,
+    denorms: Array<BigInt>,
+    swapFee: BigInt,
+    exitFee: BigInt,
+    params: FarmFactory__createPoolAndFarmInputParamsStruct
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "createdFarmPools",
-      "createdFarmPools(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
+      "createPoolAndFarm",
+      "createPoolAndFarm(address,address[],uint256[],uint256[],uint256,uint256,(address,uint256,uint256,uint256,uint256,uint256,uint256)):(uint256)",
+      [
+        ethereum.Value.fromAddress(factoryAddress),
+        ethereum.Value.fromAddressArray(tokens),
+        ethereum.Value.fromUnsignedBigIntArray(balances),
+        ethereum.Value.fromUnsignedBigIntArray(denorms),
+        ethereum.Value.fromUnsignedBigInt(swapFee),
+        ethereum.Value.fromUnsignedBigInt(exitFee),
+        ethereum.Value.fromTuple(params)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  createToken(
+    name: string,
+    symbol: string,
+    decimals: i32,
+    totalSupply: BigInt
+  ): Address {
+    let result = super.call(
+      "createToken",
+      "createToken(string,string,uint8,uint256):(address)",
+      [
+        ethereum.Value.fromString(name),
+        ethereum.Value.fromString(symbol),
+        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(decimals)),
+        ethereum.Value.fromUnsignedBigInt(totalSupply)
+      ]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_createToken(
+    name: string,
+    symbol: string,
+    decimals: i32,
+    totalSupply: BigInt
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "createToken",
+      "createToken(string,string,uint8,uint256):(address)",
+      [
+        ethereum.Value.fromString(name),
+        ethereum.Value.fromString(symbol),
+        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(decimals)),
+        ethereum.Value.fromUnsignedBigInt(totalSupply)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   createdTokens(param0: Bytes): boolean {
@@ -280,214 +387,6 @@ export class FarmFactory extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
-
-  createToken(
-    name: string,
-    symbol: string,
-    decimals: i32,
-    totalSupply: BigInt
-  ): Address {
-    let result = super.call(
-      "createToken",
-      "createToken(string,string,uint8,uint256):(address)",
-      [
-        ethereum.Value.fromString(name),
-        ethereum.Value.fromString(symbol),
-        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(decimals)),
-        ethereum.Value.fromUnsignedBigInt(totalSupply)
-      ]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_createToken(
-    name: string,
-    symbol: string,
-    decimals: i32,
-    totalSupply: BigInt
-  ): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "createToken",
-      "createToken(string,string,uint8,uint256):(address)",
-      [
-        ethereum.Value.fromString(name),
-        ethereum.Value.fromString(symbol),
-        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(decimals)),
-        ethereum.Value.fromUnsignedBigInt(totalSupply)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  createXPool(
-    factoryAddress: Address,
-    tokens: Array<Address>,
-    balances: Array<BigInt>,
-    denorms: Array<BigInt>,
-    swapFee: BigInt,
-    exitFee: BigInt
-  ): Address {
-    let result = super.call(
-      "createXPool",
-      "createXPool(address,address[],uint256[],uint256[],uint256,uint256):(address)",
-      [
-        ethereum.Value.fromAddress(factoryAddress),
-        ethereum.Value.fromAddressArray(tokens),
-        ethereum.Value.fromUnsignedBigIntArray(balances),
-        ethereum.Value.fromUnsignedBigIntArray(denorms),
-        ethereum.Value.fromUnsignedBigInt(swapFee),
-        ethereum.Value.fromUnsignedBigInt(exitFee)
-      ]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_createXPool(
-    factoryAddress: Address,
-    tokens: Array<Address>,
-    balances: Array<BigInt>,
-    denorms: Array<BigInt>,
-    swapFee: BigInt,
-    exitFee: BigInt
-  ): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "createXPool",
-      "createXPool(address,address[],uint256[],uint256[],uint256,uint256):(address)",
-      [
-        ethereum.Value.fromAddress(factoryAddress),
-        ethereum.Value.fromAddressArray(tokens),
-        ethereum.Value.fromUnsignedBigIntArray(balances),
-        ethereum.Value.fromUnsignedBigIntArray(denorms),
-        ethereum.Value.fromUnsignedBigInt(swapFee),
-        ethereum.Value.fromUnsignedBigInt(exitFee)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  createFarmPool(
-    rewardToken: Address,
-    stakeToken: Address,
-    startBlock: BigInt,
-    rewardsDuration: BigInt,
-    rewardRatio: BigInt,
-    lockRatio: BigInt,
-    halflifeK: BigInt,
-    halflifeRatio: BigInt
-  ): BigInt {
-    let result = super.call(
-      "createFarmPool",
-      "createFarmPool(address,address,uint256,uint256,uint256,uint256,uint256,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(rewardToken),
-        ethereum.Value.fromAddress(stakeToken),
-        ethereum.Value.fromUnsignedBigInt(startBlock),
-        ethereum.Value.fromUnsignedBigInt(rewardsDuration),
-        ethereum.Value.fromUnsignedBigInt(rewardRatio),
-        ethereum.Value.fromUnsignedBigInt(lockRatio),
-        ethereum.Value.fromUnsignedBigInt(halflifeK),
-        ethereum.Value.fromUnsignedBigInt(halflifeRatio)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_createFarmPool(
-    rewardToken: Address,
-    stakeToken: Address,
-    startBlock: BigInt,
-    rewardsDuration: BigInt,
-    rewardRatio: BigInt,
-    lockRatio: BigInt,
-    halflifeK: BigInt,
-    halflifeRatio: BigInt
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "createFarmPool",
-      "createFarmPool(address,address,uint256,uint256,uint256,uint256,uint256,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(rewardToken),
-        ethereum.Value.fromAddress(stakeToken),
-        ethereum.Value.fromUnsignedBigInt(startBlock),
-        ethereum.Value.fromUnsignedBigInt(rewardsDuration),
-        ethereum.Value.fromUnsignedBigInt(rewardRatio),
-        ethereum.Value.fromUnsignedBigInt(lockRatio),
-        ethereum.Value.fromUnsignedBigInt(halflifeK),
-        ethereum.Value.fromUnsignedBigInt(halflifeRatio)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  createPoolAndFarm(
-    factoryAddress: Address,
-    tokens: Array<Address>,
-    balances: Array<BigInt>,
-    denorms: Array<BigInt>,
-    swapFee: BigInt,
-    exitFee: BigInt,
-    params: FarmFactory__createPoolAndFarmInputParamsStruct
-  ): BigInt {
-    let result = super.call(
-      "createPoolAndFarm",
-      "createPoolAndFarm(address,address[],uint256[],uint256[],uint256,uint256,(address,uint256,uint256,uint256,uint256,uint256,uint256)):(uint256)",
-      [
-        ethereum.Value.fromAddress(factoryAddress),
-        ethereum.Value.fromAddressArray(tokens),
-        ethereum.Value.fromUnsignedBigIntArray(balances),
-        ethereum.Value.fromUnsignedBigIntArray(denorms),
-        ethereum.Value.fromUnsignedBigInt(swapFee),
-        ethereum.Value.fromUnsignedBigInt(exitFee),
-        ethereum.Value.fromTuple(params)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_createPoolAndFarm(
-    factoryAddress: Address,
-    tokens: Array<Address>,
-    balances: Array<BigInt>,
-    denorms: Array<BigInt>,
-    swapFee: BigInt,
-    exitFee: BigInt,
-    params: FarmFactory__createPoolAndFarmInputParamsStruct
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "createPoolAndFarm",
-      "createPoolAndFarm(address,address[],uint256[],uint256[],uint256,uint256,(address,uint256,uint256,uint256,uint256,uint256,uint256)):(uint256)",
-      [
-        ethereum.Value.fromAddress(factoryAddress),
-        ethereum.Value.fromAddressArray(tokens),
-        ethereum.Value.fromUnsignedBigIntArray(balances),
-        ethereum.Value.fromUnsignedBigIntArray(denorms),
-        ethereum.Value.fromUnsignedBigInt(swapFee),
-        ethereum.Value.fromUnsignedBigInt(exitFee),
-        ethereum.Value.fromTuple(params)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
 }
 
 export class ConstructorCall extends ethereum.Call {
@@ -517,168 +416,6 @@ export class ConstructorCall__Outputs {
 
   constructor(call: ConstructorCall) {
     this._call = call;
-  }
-}
-
-export class CreateTokenCall extends ethereum.Call {
-  get inputs(): CreateTokenCall__Inputs {
-    return new CreateTokenCall__Inputs(this);
-  }
-
-  get outputs(): CreateTokenCall__Outputs {
-    return new CreateTokenCall__Outputs(this);
-  }
-}
-
-export class CreateTokenCall__Inputs {
-  _call: CreateTokenCall;
-
-  constructor(call: CreateTokenCall) {
-    this._call = call;
-  }
-
-  get name(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-
-  get symbol(): string {
-    return this._call.inputValues[1].value.toString();
-  }
-
-  get decimals(): i32 {
-    return this._call.inputValues[2].value.toI32();
-  }
-
-  get totalSupply(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-}
-
-export class CreateTokenCall__Outputs {
-  _call: CreateTokenCall;
-
-  constructor(call: CreateTokenCall) {
-    this._call = call;
-  }
-
-  get token(): Address {
-    return this._call.outputValues[0].value.toAddress();
-  }
-}
-
-export class CreateXPoolCall extends ethereum.Call {
-  get inputs(): CreateXPoolCall__Inputs {
-    return new CreateXPoolCall__Inputs(this);
-  }
-
-  get outputs(): CreateXPoolCall__Outputs {
-    return new CreateXPoolCall__Outputs(this);
-  }
-}
-
-export class CreateXPoolCall__Inputs {
-  _call: CreateXPoolCall;
-
-  constructor(call: CreateXPoolCall) {
-    this._call = call;
-  }
-
-  get factoryAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get tokens(): Array<Address> {
-    return this._call.inputValues[1].value.toAddressArray();
-  }
-
-  get balances(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
-
-  get denorms(): Array<BigInt> {
-    return this._call.inputValues[3].value.toBigIntArray();
-  }
-
-  get swapFee(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
-  }
-
-  get exitFee(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-}
-
-export class CreateXPoolCall__Outputs {
-  _call: CreateXPoolCall;
-
-  constructor(call: CreateXPoolCall) {
-    this._call = call;
-  }
-
-  get pool(): Address {
-    return this._call.outputValues[0].value.toAddress();
-  }
-}
-
-export class CreateFarmPoolCall extends ethereum.Call {
-  get inputs(): CreateFarmPoolCall__Inputs {
-    return new CreateFarmPoolCall__Inputs(this);
-  }
-
-  get outputs(): CreateFarmPoolCall__Outputs {
-    return new CreateFarmPoolCall__Outputs(this);
-  }
-}
-
-export class CreateFarmPoolCall__Inputs {
-  _call: CreateFarmPoolCall;
-
-  constructor(call: CreateFarmPoolCall) {
-    this._call = call;
-  }
-
-  get rewardToken(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get stakeToken(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get startBlock(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get rewardsDuration(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get rewardRatio(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
-  }
-
-  get lockRatio(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-
-  get halflifeK(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
-  }
-
-  get halflifeRatio(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
-  }
-}
-
-export class CreateFarmPoolCall__Outputs {
-  _call: CreateFarmPoolCall;
-
-  constructor(call: CreateFarmPoolCall) {
-    this._call = call;
-  }
-
-  get farmId(): BigInt {
-    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -767,5 +504,51 @@ export class CreatePoolAndFarmCallParamsStruct extends ethereum.Tuple {
 
   get halflifeRatio(): BigInt {
     return this[6].toBigInt();
+  }
+}
+
+export class CreateTokenCall extends ethereum.Call {
+  get inputs(): CreateTokenCall__Inputs {
+    return new CreateTokenCall__Inputs(this);
+  }
+
+  get outputs(): CreateTokenCall__Outputs {
+    return new CreateTokenCall__Outputs(this);
+  }
+}
+
+export class CreateTokenCall__Inputs {
+  _call: CreateTokenCall;
+
+  constructor(call: CreateTokenCall) {
+    this._call = call;
+  }
+
+  get name(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get symbol(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get decimals(): i32 {
+    return this._call.inputValues[2].value.toI32();
+  }
+
+  get totalSupply(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+}
+
+export class CreateTokenCall__Outputs {
+  _call: CreateTokenCall;
+
+  constructor(call: CreateTokenCall) {
+    this._call = call;
+  }
+
+  get token(): Address {
+    return this._call.outputValues[0].value.toAddress();
   }
 }

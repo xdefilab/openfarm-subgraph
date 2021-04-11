@@ -21,8 +21,8 @@ export function handleLogCreateFarmPool(event: LogCreateFarmPool): void {
     let farmPool = new FarmPool(event.params.farmId.toHexString())
     farmPool.farmPoolId=event.params.farmId;
     farmPool.spotPoolId=event.params.stakeToken.toHexString();
-    farmPool.rewardsToken=event.params.rewardsToken.toHexString();
-    farmPool.stakingToken=event.params.stakingToken.toHexString();
+    farmPool.rewardsToken=event.params.rewardToken.toHexString();
+    farmPool.stakingToken=event.params.stakeToken.toHexString();
     farmPool.creater=event.params.creator.toHexString();
     farmPool.startBlock=event.params.startBlock;
     farmPool.endBlock=event.params.startBlock.puls(event.params.rewardsDuration);
