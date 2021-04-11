@@ -28,7 +28,7 @@ export function handleLogCreateFarmPool(event: LogCreateFarmPool): void {
     farmPool.endBlock=event.params.startBlock.puls(event.params.rewardsDuration);
     farmPool.rewardsDuration=event.params.rewardsDuration;
     farmPool.rewardRatio=event.params.rewardRatio;
-    farmPool.totalSupply=0;
+    farmPool.totalSupply=BigInt.fromI32(0);
     farmPool.unlockRatio=event.params.lockRatio;
     farmPool.halflifeK=event.params.halflifeK;
     farmPool.halflifeRatio=event.params.halflifeRatio;

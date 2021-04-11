@@ -13,13 +13,13 @@ import { ZERO_BD } from './helpers'
 export function handleLogRewardAdded(event: LogRewardAdded): void {}
 
 export function handleLogStaked(event: LogStaked): void { 
-    let farmPool =FarmPool.load(event.params.poolId.toHexString())
+    let farmPool =FarmPool.load(event.params.poolId.toString())
     if (farmPool==null){
         return
     }
-    let farmStake=FarmStake.load("");
+    let farmStake=FarmStake.load(event.params.poolId.toString()+"_"+event.params.user.toHexString());
     if (farmStake == null) {
-        farmStake=new FarmStake("");
+        farmStake=new FarmStake(event.params.poolId.toString()+"_"+event.params.user.toHexString());
         farmStake.userAddress=event.params.user;
         farmStake.farmPoolId=event.params.poolId;
         farmStake.amount=BigInt.fromI32(0);
@@ -31,11 +31,11 @@ export function handleLogStaked(event: LogStaked): void {
 }
 
 export function handleLogWithdrawn(event: LogWithdrawn): void { 
-    let farmPool =FarmPool.load(event.params.poolId.toHexString())
+    let farmPool =FarmPool.load(event.params.poolId.toString())
     if (farmPool==null){
         return
     }
-    let farmStake=FarmStake.load("");
+    let farmStake=FarmStake.load(event.params.poolId.toString()+"_"+event.params.user.toHexString());
     if (farmStake == null) {
         return
     }
@@ -50,9 +50,9 @@ export function handleLogRewardPaid(event: LogRewardPaid): void {
 }
 
 export function handleLogRewardToStream(event: LogRewardToStream): void {
-    let rewardSteam=RewardStream.load("");
+    let rewardSteam=RewardStream.load(event.params.streamId.toString());
     if (rewardSteam==null){
-        rewardSteam=new RewardStream("");
+        rewardSteam=new RewardStream(event.params.streamId.toString());
         rewardSteam.streamId=event.params.streamId;
         rewardSteam.userAddress=event.params.user;
         rewardSteam.farmPoolId=event.params.poolId;
