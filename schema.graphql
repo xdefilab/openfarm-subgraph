@@ -3,7 +3,11 @@ type OpenFarm @entity {
   totalFarmCount: BigInt!
   totalErc20Count: BigInt!
 }
-
+type StatPool @entity{
+    id: ID!
+    creater: String!
+    spotPoolId: String!
+}
 type TemplateAToken @entity {
     id: ID!
     symbol: String
@@ -48,6 +52,7 @@ type RewardStream @entity {
     userAddress: User!
     farmPoolId: FarmPool!
     streamId: Int!               # 0 means not exist
+    amount: BigDecimal!
 }
 
 type User @entity {

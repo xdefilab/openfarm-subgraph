@@ -61,6 +61,55 @@ export class OpenFarm extends Entity {
   }
 }
 
+export class StatPool extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save StatPool entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save StatPool entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("StatPool", id.toString(), this);
+  }
+
+  static load(id: string): StatPool | null {
+    return store.get("StatPool", id) as StatPool | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get creater(): string {
+    let value = this.get("creater");
+    return value.toString();
+  }
+
+  set creater(value: string) {
+    this.set("creater", Value.fromString(value));
+  }
+
+  get spotPoolId(): string {
+    let value = this.get("spotPoolId");
+    return value.toString();
+  }
+
+  set spotPoolId(value: string) {
+    this.set("spotPoolId", Value.fromString(value));
+  }
+}
+
 export class TemplateAToken extends Entity {
   constructor(id: string) {
     super();
@@ -500,6 +549,15 @@ export class RewardStream extends Entity {
 
   set streamId(value: i32) {
     this.set("streamId", Value.fromI32(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
   }
 }
 

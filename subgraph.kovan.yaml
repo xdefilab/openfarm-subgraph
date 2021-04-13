@@ -21,7 +21,7 @@ dataSources:
         - name: FarmFactory
           file: ./abis/FarmFactory.json
       eventHandlers:
-        - event: LogCreateFarmPool(indexed address,indexed uint256)
+        - event: LogCreateFarmPool(indexed address,indexed address,indexed address ,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleLogCreateFarmPool
         - event: LogCreateSpotPool(indexed address,indexed address)
           handler: handleLogCreateSpotPool

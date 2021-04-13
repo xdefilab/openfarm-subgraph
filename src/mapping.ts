@@ -5,7 +5,7 @@ import {
     LogCreateSpotPool,
     LogCreateToken
 } from "../generated/FarmFactory/FarmFactory"
-import { OpenFarm } from "../generated/schema"
+import { FarmPool, OpenFarm,StatPool } from "../generated/schema"
 import { ZERO_BD } from './helpers'
 
 export function handleLogCreateFarmPool(event: LogCreateFarmPool): void {
@@ -18,9 +18,31 @@ export function handleLogCreateFarmPool(event: LogCreateFarmPool): void {
     }
     openFarm.totalFarmCount = openFarm.totalFarmCount.plus(BigInt.fromI32(1))
     openFarm.save()
+    let farmPool = new FarmPool(event.params.farmId.toHexString())
+    farmPool.farmPoolId=event.params.farmId;
+    farmPool.spotPoolId=event.params.stakeToken.toHexString();
+    farmPool.rewardsToken=event.params.rewardToken.toHexString();
+    farmPool.stakingToken=event.params.stakeToken.toHexString();
+    farmPool.creater=event.params.creator.toHexString();
+    farmPool.startBlock=event.params.startBlock;
+    farmPool.endBlock=event.params.startBlock.puls(event.params.rewardsDuration);
+    farmPool.rewardsDuration=event.params.rewardsDuration;
+    farmPool.rewardRatio=event.params.rewardRatio;
+    farmPool.totalSupply=BigInt.fromI32(0);
+    farmPool.unlockRatio=event.params.lockRatio;
+    farmPool.halflifeK=event.params.halflifeK;
+    farmPool.halflifeRatio=event.params.halflifeRatio;
+    farmPool.tx=event.transaction.hash;
+
+    farmPool.save();
 }
 
-export function handleLogCreateSpotPool(event: LogCreateSpotPool): void { }
+export function handleLogCreateSpotPool(event: LogCreateSpotPool): void { 
+    let statPool=new StatPool("")
+    statPool.spotPoolId=event.params.pool.toHexString();
+    statPool.creater=event.params.creator.toHexString();
+    statPool.save();
+}
 
 export function handleLogCreateToken(event: LogCreateToken): void {
     let openFarm = OpenFarm.load('1')
