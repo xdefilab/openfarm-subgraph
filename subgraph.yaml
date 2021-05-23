@@ -25,7 +25,7 @@ dataSources:
           handler: handleLogCreateFarmPool
         - event: LogCreateSpotPool(indexed address,indexed address)
           handler: handleLogCreateSpotPool
-        - event: LogCreateToken(indexed address,indexed address)
+        - event: LogCreateToken(indexed address,indexed address,bytes,bytes,uint8,uint256)
           handler: handleLogCreateToken
       file: ./src/mapping.ts
   - kind: ethereum/contract

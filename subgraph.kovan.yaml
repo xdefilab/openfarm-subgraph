@@ -6,9 +6,9 @@ dataSources:
     name: FarmFactory
     network: kovan
     source:
-      address: "0xBc0DEFF366F5b5Ae817e6a3bD8FD193A5a719dfA"
+      address: "0xE8F555D2dA5CAA6619F28D7d69D5EACa46B1739C"
       abi: FarmFactory
-      startBlock: 24201800
+      startBlock: 24987000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -21,11 +21,11 @@ dataSources:
         - name: FarmFactory
           file: ./abis/FarmFactory.json
       eventHandlers:
-        - event: LogCreateFarmPool(indexed address,indexed address,indexed address ,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+        - event: LogCreateFarmPool(indexed address,indexed address,indexed address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleLogCreateFarmPool
         - event: LogCreateSpotPool(indexed address,indexed address)
           handler: handleLogCreateSpotPool
-        - event: LogCreateToken(indexed address,indexed address)
+        - event: LogCreateToken(indexed address,indexed address,bytes,bytes,uint8,uint256)
           handler: handleLogCreateToken
       file: ./src/mapping.ts
   - kind: ethereum/contract

@@ -13,7 +13,7 @@ type TemplateAToken @entity {
     symbol: String
     name: String
     decimals: Int!
-    address: String!
+    address: Bytes!
     totalSupply: BigInt!
     issuer: Bytes!
     timestamp: BigInt!
@@ -21,19 +21,19 @@ type TemplateAToken @entity {
 
 type FarmPool @entity {
     id: ID!
-    farmPoolId: Int!                  # for sorting
+    farmPoolId: BigInt!                  # for sorting
     spotPoolId: String!               # spot pool address
     rewardsToken: String!
     stakingToken: String!
     creater: String!
-    startBlock: Int!
-    endBlock: Int!
-    rewardsDuration: Int!             # duration = start - block + 1
-    rewardRatio: Int!
+    startBlock: BigInt!
+    endBlock: BigInt!
+    rewardsDuration: BigInt!             # duration = start - block + 1
+    rewardRatio: BigInt!
     totalSupply: BigInt!
     unlockRatio: BigInt!
-    halflifeK: Int!
-    halflifeRatio: Int!
+    halflifeK: BigInt!
+    halflifeRatio: BigInt!
     stakes: [FarmStake!] @derivedFrom(field: "farmPoolId")
     streams: [RewardStream!] @derivedFrom(field: "farmPoolId")
     proposals:[VoteProposal!] @derivedFrom(field: "farmPoolId")
@@ -51,7 +51,7 @@ type RewardStream @entity {
     id: ID!
     userAddress: User!
     farmPoolId: FarmPool!
-    streamId: Int!               # 0 means not exist
+    streamId: BigInt!               # 0 means not exist
     amount: BigDecimal!
 }
 

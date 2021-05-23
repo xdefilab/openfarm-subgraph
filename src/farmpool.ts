@@ -20,11 +20,11 @@ export function handleLogStaked(event: LogStaked): void {
     let farmStake=FarmStake.load(event.params.poolId.toString()+"_"+event.params.user.toHexString());
     if (farmStake == null) {
         farmStake=new FarmStake(event.params.poolId.toString()+"_"+event.params.user.toHexString());
-        farmStake.userAddress=event.params.user;
-        farmStake.farmPoolId=event.params.poolId;
-        farmStake.amount=BigInt.fromI32(0);
+        farmStake.userAddress=event.params.user.toHex();
+        farmStake.farmPoolId=event.params.poolId.toString();
+        farmStake.amount=ZERO_BD;
     }
-    farmStake.amount=farmStake.amount.plus(event.params.amount)
+    farmStake.amount=farmStake.amount.plus(event.params.amount.toBigDecimal())
     farmStake.save();
     farmPool.totalSupply=farmPool.totalSupply.plus(event.params.amount)
     farmPool.save() 
@@ -39,7 +39,7 @@ export function handleLogWithdrawn(event: LogWithdrawn): void {
     if (farmStake == null) {
         return
     }
-    farmStake.amount=farmStake.amount.minus(event.params.amount)
+    farmStake.amount=farmStake.amount.minus(event.params.amount.toBigDecimal())
     farmStake.save();
     farmPool.totalSupply=farmPool.totalSupply.minus(event.params.amount)
     farmPool.save() 
@@ -54,10 +54,10 @@ export function handleLogRewardToStream(event: LogRewardToStream): void {
     if (rewardSteam==null){
         rewardSteam=new RewardStream(event.params.streamId.toString());
         rewardSteam.streamId=event.params.streamId;
-        rewardSteam.userAddress=event.params.user;
-        rewardSteam.farmPoolId=event.params.poolId;
-        rewardSteam.amount=BigInt.fromI32(0);
+        rewardSteam.userAddress=event.params.user.toHex();
+        rewardSteam.farmPoolId=event.params.poolId.toString();
+        rewardSteam.amount=ZERO_BD;
     }
-    rewardSteam.amount=rewardSteam.amount.puls(event.params.reward);
+    rewardSteam.amount=rewardSteam.amount.plus(event.params.reward.toBigDecimal());
     rewardSteam.save();
 }

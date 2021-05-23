@@ -113,6 +113,30 @@
 					"internalType": "address",
 					"name": "token",
 					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "bytes",
+					"name": "name",
+					"type": "bytes"
+				},
+				{
+					"indexed": false,
+					"internalType": "bytes",
+					"name": "symbol",
+					"type": "bytes"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint8",
+					"name": "decimals",
+					"type": "uint8"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "totalSupply",
+					"type": "uint256"
 				}
 			],
 			"name": "LogCreateToken",

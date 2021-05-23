@@ -183,13 +183,13 @@ export class TemplateAToken extends Entity {
     this.set("decimals", Value.fromI32(value));
   }
 
-  get address(): string {
+  get address(): Bytes {
     let value = this.get("address");
-    return value.toString();
+    return value.toBytes();
   }
 
-  set address(value: string) {
-    this.set("address", Value.fromString(value));
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
   }
 
   get totalSupply(): BigInt {
@@ -250,13 +250,13 @@ export class FarmPool extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get farmPoolId(): i32 {
+  get farmPoolId(): BigInt {
     let value = this.get("farmPoolId");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set farmPoolId(value: i32) {
-    this.set("farmPoolId", Value.fromI32(value));
+  set farmPoolId(value: BigInt) {
+    this.set("farmPoolId", Value.fromBigInt(value));
   }
 
   get spotPoolId(): string {
@@ -295,40 +295,40 @@ export class FarmPool extends Entity {
     this.set("creater", Value.fromString(value));
   }
 
-  get startBlock(): i32 {
+  get startBlock(): BigInt {
     let value = this.get("startBlock");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set startBlock(value: i32) {
-    this.set("startBlock", Value.fromI32(value));
+  set startBlock(value: BigInt) {
+    this.set("startBlock", Value.fromBigInt(value));
   }
 
-  get endBlock(): i32 {
+  get endBlock(): BigInt {
     let value = this.get("endBlock");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set endBlock(value: i32) {
-    this.set("endBlock", Value.fromI32(value));
+  set endBlock(value: BigInt) {
+    this.set("endBlock", Value.fromBigInt(value));
   }
 
-  get rewardsDuration(): i32 {
+  get rewardsDuration(): BigInt {
     let value = this.get("rewardsDuration");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set rewardsDuration(value: i32) {
-    this.set("rewardsDuration", Value.fromI32(value));
+  set rewardsDuration(value: BigInt) {
+    this.set("rewardsDuration", Value.fromBigInt(value));
   }
 
-  get rewardRatio(): i32 {
+  get rewardRatio(): BigInt {
     let value = this.get("rewardRatio");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set rewardRatio(value: i32) {
-    this.set("rewardRatio", Value.fromI32(value));
+  set rewardRatio(value: BigInt) {
+    this.set("rewardRatio", Value.fromBigInt(value));
   }
 
   get totalSupply(): BigInt {
@@ -349,22 +349,22 @@ export class FarmPool extends Entity {
     this.set("unlockRatio", Value.fromBigInt(value));
   }
 
-  get halflifeK(): i32 {
+  get halflifeK(): BigInt {
     let value = this.get("halflifeK");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set halflifeK(value: i32) {
-    this.set("halflifeK", Value.fromI32(value));
+  set halflifeK(value: BigInt) {
+    this.set("halflifeK", Value.fromBigInt(value));
   }
 
-  get halflifeRatio(): i32 {
+  get halflifeRatio(): BigInt {
     let value = this.get("halflifeRatio");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set halflifeRatio(value: i32) {
-    this.set("halflifeRatio", Value.fromI32(value));
+  set halflifeRatio(value: BigInt) {
+    this.set("halflifeRatio", Value.fromBigInt(value));
   }
 
   get stakes(): Array<string> | null {
@@ -542,13 +542,13 @@ export class RewardStream extends Entity {
     this.set("farmPoolId", Value.fromString(value));
   }
 
-  get streamId(): i32 {
+  get streamId(): BigInt {
     let value = this.get("streamId");
-    return value.toI32();
+    return value.toBigInt();
   }
 
-  set streamId(value: i32) {
-    this.set("streamId", Value.fromI32(value));
+  set streamId(value: BigInt) {
+    this.set("streamId", Value.fromBigInt(value));
   }
 
   get amount(): BigDecimal {
