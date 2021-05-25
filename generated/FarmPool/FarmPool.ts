@@ -10,28 +10,6 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class LogCreatFarmPool extends ethereum.Event {
-  get params(): LogCreatFarmPool__Params {
-    return new LogCreatFarmPool__Params(this);
-  }
-}
-
-export class LogCreatFarmPool__Params {
-  _event: LogCreatFarmPool;
-
-  constructor(event: LogCreatFarmPool) {
-    this._event = event;
-  }
-
-  get poolId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get creator(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
 export class LogRewardAdded extends ethereum.Event {
   get params(): LogRewardAdded__Params {
     return new LogRewardAdded__Params(this);
@@ -110,6 +88,50 @@ export class LogRewardToStream__Params {
   }
 }
 
+export class LogSetOwner extends ethereum.Event {
+  get params(): LogSetOwner__Params {
+    return new LogSetOwner__Params(this);
+  }
+}
+
+export class LogSetOwner__Params {
+  _event: LogSetOwner;
+
+  constructor(event: LogSetOwner) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get _owner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class LogSetProposal extends ethereum.Event {
+  get params(): LogSetProposal__Params {
+    return new LogSetProposal__Params(this);
+  }
+}
+
+export class LogSetProposal__Params {
+  _event: LogSetProposal;
+
+  constructor(event: LogSetProposal) {
+    this._event = event;
+  }
+
+  get farmId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get proposalId(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+}
+
 export class LogStaked extends ethereum.Event {
   get params(): LogStaked__Params {
     return new LogStaked__Params(this);
@@ -162,7 +184,7 @@ export class LogWithdrawn__Params {
   }
 }
 
-export class FarmPool__getPoolInfoResult {
+export class FarmPool__getFarmInfoResult {
   value0: Address;
   value1: Address;
   value2: Address;
@@ -172,6 +194,7 @@ export class FarmPool__getPoolInfoResult {
   value6: BigInt;
   value7: BigInt;
   value8: BigInt;
+  value9: Bytes;
 
   constructor(
     value0: Address,
@@ -182,7 +205,8 @@ export class FarmPool__getPoolInfoResult {
     value5: BigInt,
     value6: BigInt,
     value7: BigInt,
-    value8: BigInt
+    value8: BigInt,
+    value9: Bytes
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -193,6 +217,7 @@ export class FarmPool__getPoolInfoResult {
     this.value6 = value6;
     this.value7 = value7;
     this.value8 = value8;
+    this.value9 = value9;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -206,6 +231,7 @@ export class FarmPool__getPoolInfoResult {
     map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
     map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
     map.set("value8", ethereum.Value.fromUnsignedBigInt(this.value8));
+    map.set("value9", ethereum.Value.fromFixedBytes(this.value9));
     return map;
   }
 }
@@ -440,14 +466,14 @@ export class FarmPool extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getPoolInfo(poolId: BigInt): FarmPool__getPoolInfoResult {
+  getFarmInfo(farmId: BigInt): FarmPool__getFarmInfoResult {
     let result = super.call(
-      "getPoolInfo",
-      "getPoolInfo(uint256):(address,address,address,uint256,uint256,uint256,uint256,uint256,uint256)",
-      [ethereum.Value.fromUnsignedBigInt(poolId)]
+      "getFarmInfo",
+      "getFarmInfo(uint256):(address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes32)",
+      [ethereum.Value.fromUnsignedBigInt(farmId)]
     );
 
-    return new FarmPool__getPoolInfoResult(
+    return new FarmPool__getFarmInfoResult(
       result[0].toAddress(),
       result[1].toAddress(),
       result[2].toAddress(),
@@ -456,24 +482,25 @@ export class FarmPool extends ethereum.SmartContract {
       result[5].toBigInt(),
       result[6].toBigInt(),
       result[7].toBigInt(),
-      result[8].toBigInt()
+      result[8].toBigInt(),
+      result[9].toBytes()
     );
   }
 
-  try_getPoolInfo(
-    poolId: BigInt
-  ): ethereum.CallResult<FarmPool__getPoolInfoResult> {
+  try_getFarmInfo(
+    farmId: BigInt
+  ): ethereum.CallResult<FarmPool__getFarmInfoResult> {
     let result = super.tryCall(
-      "getPoolInfo",
-      "getPoolInfo(uint256):(address,address,address,uint256,uint256,uint256,uint256,uint256,uint256)",
-      [ethereum.Value.fromUnsignedBigInt(poolId)]
+      "getFarmInfo",
+      "getFarmInfo(uint256):(address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes32)",
+      [ethereum.Value.fromUnsignedBigInt(farmId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new FarmPool__getPoolInfoResult(
+      new FarmPool__getFarmInfoResult(
         value[0].toAddress(),
         value[1].toAddress(),
         value[2].toAddress(),
@@ -482,7 +509,8 @@ export class FarmPool extends ethereum.SmartContract {
         value[5].toBigInt(),
         value[6].toBigInt(),
         value[7].toBigInt(),
-        value[8].toBigInt()
+        value[8].toBigInt(),
+        value[9].toBytes()
       )
     );
   }
@@ -709,5 +737,69 @@ export class CreatePoolCall__Outputs {
 
   get poolId(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class SetOwnerCall extends ethereum.Call {
+  get inputs(): SetOwnerCall__Inputs {
+    return new SetOwnerCall__Inputs(this);
+  }
+
+  get outputs(): SetOwnerCall__Outputs {
+    return new SetOwnerCall__Outputs(this);
+  }
+}
+
+export class SetOwnerCall__Inputs {
+  _call: SetOwnerCall;
+
+  constructor(call: SetOwnerCall) {
+    this._call = call;
+  }
+
+  get _addr(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetOwnerCall__Outputs {
+  _call: SetOwnerCall;
+
+  constructor(call: SetOwnerCall) {
+    this._call = call;
+  }
+}
+
+export class SetProposalIdCall extends ethereum.Call {
+  get inputs(): SetProposalIdCall__Inputs {
+    return new SetProposalIdCall__Inputs(this);
+  }
+
+  get outputs(): SetProposalIdCall__Outputs {
+    return new SetProposalIdCall__Outputs(this);
+  }
+}
+
+export class SetProposalIdCall__Inputs {
+  _call: SetProposalIdCall;
+
+  constructor(call: SetProposalIdCall) {
+    this._call = call;
+  }
+
+  get farmId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get proposalId(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class SetProposalIdCall__Outputs {
+  _call: SetProposalIdCall;
+
+  constructor(call: SetProposalIdCall) {
+    this._call = call;
   }
 }

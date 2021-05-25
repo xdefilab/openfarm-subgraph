@@ -252,14 +252,14 @@
             "constant": false,
             "inputs": [
                 {
-                    "internalType": "string",
+                    "internalType": "bytes32",
                     "name": "name",
-                    "type": "string"
+                    "type": "bytes32"
                 },
                 {
-                    "internalType": "string",
+                    "internalType": "bytes32",
                     "name": "symbol",
-                    "type": "string"
+                    "type": "bytes32"
                 },
                 {
                     "internalType": "uint8",
@@ -289,9 +289,9 @@
             "name": "name",
             "outputs": [
                 {
-                    "internalType": "string",
+                    "internalType": "bytes32",
                     "name": "",
-                    "type": "string"
+                    "type": "bytes32"
                 }
             ],
             "payable": false,
@@ -304,9 +304,9 @@
             "name": "symbol",
             "outputs": [
                 {
-                    "internalType": "string",
+                    "internalType": "bytes32",
                     "name": "",
-                    "type": "string"
+                    "type": "bytes32"
                 }
             ],
             "payable": false,

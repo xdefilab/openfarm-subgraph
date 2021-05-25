@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0xdDD50107E97578726cfDD3450CE35da02B3c9E64"
       abi: FarmFactory
-      startBlock: 24987000
+      startBlock: 25030200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -34,7 +34,7 @@ dataSources:
     source:
       address: "0xD32a6B5d5313fB92a7c87Aa51DCf7FB786D5427c"
       abi: FarmPool
-      startBlock: 24201800
+      startBlock: 25030200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
